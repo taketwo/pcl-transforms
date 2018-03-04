@@ -1,3 +1,6 @@
 [submodule "third-party/celero"]
 	path = third-party/celero
 	url = https://github.com/DigitalInBlue/Celero.git
+[submodule "third-party/googletest"]
+	path = third-party/googletest
+	url = https://github.com/google/googletest.git
