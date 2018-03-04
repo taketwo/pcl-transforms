@@ -1,0 +1,3 @@
+[submodule "third-party/celero"]
+	path = third-party/celero
+	url = https://github.com/DigitalInBlue/Celero.git
