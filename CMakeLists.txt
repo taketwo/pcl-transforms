@@ -48,5 +48,7 @@ set_property(
     INTERFACE_INCLUDE_DIRECTORIES ${PCL_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
+add_subdirectory(test)
+
 message("-- Compiler: ${COMPILER}")
 message("-- Flags: ${FLAGS}")
