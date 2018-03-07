@@ -12,6 +12,7 @@ if(APPLE)
 elseif(UNIX)
 	set(CELERO_LIBRARIES ${INSTALL_DIR}/bin/libcelero.so CACHE INTERNAL "Celero libraries")
 endif()
+set(CELERO_RPATH ${INSTALL_DIR}/bin CACHE INTERNAL "Celero libraries runtime folder")
 
 ExternalProject_Add(gtest
   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/googletest
