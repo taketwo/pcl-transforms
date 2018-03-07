@@ -19,12 +19,14 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
   set(COMPILER "intel-${COMPILER_VERSION}")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
   set(COMPILER "mvvc-${COMPILER_VERSION}")
+elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+  set(COMPILER "appleclang-${COMPILER_VERSION}")
 endif()
 
 # Benchmarks and tests will be compiled with different compiler flags pertaining to CPU instruction set.
 # Clang and Celero do not play well with "-mno-sse2" flag, so add it only for non-Clang compilers.
 set(FLAGS none native sse2)
-if(NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+if(NOT (("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") OR ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")))
   list(APPEND FLAGS no-sse2)
 endif()
 
