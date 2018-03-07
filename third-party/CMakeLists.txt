@@ -2,12 +2,16 @@ include(ExternalProject)
 
 ExternalProject_Add(celero
   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/celero
-  CMAKE_ARGS -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DCELERO_ENABLE_EXPERIMENTS=OFF
+  CMAKE_ARGS -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DCELERO_ENABLE_EXPERIMENTS=OFF -DCMAKE_MACOSX_RPATH=ON
 )
 
 ExternalProject_Get_Property(celero INSTALL_DIR)
 set(CELERO_INCLUDE_DIRS ${INSTALL_DIR}/include CACHE INTERNAL "Celero include directories")
-set(CELERO_LIBRARIES ${INSTALL_DIR}/bin/libcelero.so CACHE INTERNAL "Celero libraries")
+if(APPLE)
+	set(CELERO_LIBRARIES ${INSTALL_DIR}/bin/libcelero.dylib CACHE INTERNAL "Celero libraries")
+elseif(UNIX)
+	set(CELERO_LIBRARIES ${INSTALL_DIR}/bin/libcelero.so CACHE INTERNAL "Celero libraries")
+endif()
 
 ExternalProject_Add(gtest
   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/googletest

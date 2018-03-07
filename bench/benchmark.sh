@@ -7,6 +7,7 @@ flags=$3
 if ! hash datamash 2>/dev/null; then
   echo "This script requires datamash"
   echo "On Ubuntu: apt-get install datamash"
+  echo "On Mac OS X (Homebrew): brew install datamash"
   exit 1
 fi
 
