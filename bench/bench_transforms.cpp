@@ -5,11 +5,15 @@
 #include <transforms.hpp>
 #include <pcl/common/transforms.h>
 
+#ifndef PRECISION
+  #define PRECISION float
+#endif
+
 constexpr unsigned int CLOUD_SIZE = 640 * 480;
 constexpr int SAMPLES = 50;
 constexpr int ITERATIONS = 100;
 
-typedef double Scalar;
+typedef PRECISION Scalar;
 Eigen::Matrix<Scalar, 4, 4> matrix;
 Eigen::Transform<Scalar, 3, Eigen::Affine> tf;
 
