@@ -12,5 +12,11 @@ foreach(_precision float double)
     add_flag(${_tgt} ${_flag})
     add_dependencies(${_tgt} celero)
     add_dependencies(benchmarks ${_tgt})
+    add_custom_command(
+      TARGET ${_tgt}
+      POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/bench_transforms.s" "${CMAKE_CURRENT_BINARY_DIR}/${_tgt}.s"
+      COMMENT "Saving disassembly for ${_tgt}..."
+    )
   endforeach()
 endforeach()
