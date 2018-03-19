@@ -8,6 +8,10 @@
 #include <xmmintrin.h>
 #endif
 
+#if defined(__AVX__)
+#include <immintrin.h>
+#endif
+
 namespace detail
 {
 
@@ -44,6 +48,7 @@ namespace detail
   };
 
 #if defined(__SSE2__)
+
   /** Optimized version for single-precision transform using SSE2 intrinsics. */
   template<>
   struct Transformer<float>
@@ -72,6 +77,8 @@ namespace detail
       _mm_store_ps (tgt, _mm_add_ps(p0, _mm_add_ps(p1, _mm_add_ps(p2, c[3]))));
     }
   };
+
+#if not defined(__AVX__)
 
   /** Optimized version for double-precision transform using SSE2 intrinsics. */
   template<>
@@ -120,6 +127,40 @@ namespace detail
     }
 
   };
+
+#else
+
+  /** Optimized version for double-precision transform using AVX intrinsics. */
+  template<>
+  struct Transformer<double>
+  {
+    __m256d c[4];
+
+    Transformer(const Eigen::Matrix4d& tf)
+    {
+      for (size_t i = 0; i < 4; ++i)
+        c[i] = _mm256_load_pd (tf.col (i).data ());
+    }
+
+    void so3 (const float* src, float* tgt) const
+    {
+      __m256d p0 = _mm256_mul_pd (_mm256_cvtps_pd (_mm_load_ps1 (&src[0])), c[0]);
+      __m256d p1 = _mm256_mul_pd (_mm256_cvtps_pd (_mm_load_ps1 (&src[1])), c[1]);
+      __m256d p2 = _mm256_mul_pd (_mm256_cvtps_pd (_mm_load_ps1 (&src[2])), c[2]);
+      _mm_store_ps (tgt, _mm256_cvtpd_ps (_mm256_add_pd(p0, _mm256_add_pd(p1, p2))));
+    }
+
+    void se3 (const float* src, float* tgt) const
+    {
+      __m256d p0 = _mm256_mul_pd (_mm256_cvtps_pd (_mm_load_ps1 (&src[0])), c[0]);
+      __m256d p1 = _mm256_mul_pd (_mm256_cvtps_pd (_mm_load_ps1 (&src[1])), c[1]);
+      __m256d p2 = _mm256_mul_pd (_mm256_cvtps_pd (_mm_load_ps1 (&src[2])), c[2]);
+      _mm_store_ps (tgt, _mm256_cvtpd_ps (_mm256_add_pd(p0, _mm256_add_pd(p1, _mm256_add_pd(p2, c[3])))));
+    }
+
+  };
+
+#endif
 #endif
 
 }

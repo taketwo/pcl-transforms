@@ -1,4 +1,4 @@
-Optimization of PCL point cloud transform functions using SSE2 intrinsics.
+Optimization of PCL point cloud transform functions using SSE2/AVX intrinsics.
 
 1. Clone this repository with submodules (pass `--recursive` flag)
 
